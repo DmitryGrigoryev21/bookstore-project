@@ -1,0 +1,5 @@
+include 'bookrecommendation-service'
+include 'bookreview-service'
+include 'bookdetail-service'
+include 'authordetail-service'
+include 'api-gateway'

@@ -1,0 +1,14 @@
+[
+  {
+    "_class": "com.bookstore.authordetail.entities.Author",
+    "author": "Loe Tolstoy",
+    "bestseller": "War and Peace",
+    "bio": "He was a cool dude"
+  },
+  {
+    "_class": "com.bookstore.authordetail.entities.Author",
+    "author": "Test Author",
+    "bestseller": "Some book",
+    "bio": "He was a boring dude"
+  }
+]

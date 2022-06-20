@@ -1,0 +1,44 @@
+server:
+  error:
+    include-message: always
+
+logging:
+  level:
+    root: INFO
+    com.bookstore: DEBUG
+app:
+  bookdetail-service:
+    host: localhost
+    port: 7001
+  authordetail-service:
+    host: localhost
+    port: 7002
+  bookrecommendation-service:
+    host: localhost
+    port: 7003
+  bookreview-service:
+    host: localhost
+    port: 7004
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+server.port: 8080
+
+app:
+  bookdetail-service:
+    host: bookdetail
+    port: 8080
+  authordetail-service:
+    host: authordetail
+    port: 8080
+  bookrecommendation-service:
+    host: bookrecommendation
+    port: 8080
+  bookreview-service:
+    host: bookreview
+    port: 8080

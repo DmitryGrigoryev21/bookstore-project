@@ -1,0 +1,34 @@
+DROP TABLE books IF EXISTS;
+
+CREATE TABLE books (
+    id INT NOT NULL AUTO_INCREMENT,
+    bookUUID VARCHAR(255) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    summary VARCHAR(2000) NOT NULL,
+    isbn VARCHAR(255) NOT NULL,
+    price DOUBLE(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+-- DROP TABLE tags IF EXISTS;
+--
+-- CREATE TABLE tags (
+--     id INT NOT NULL AUTO_INCREMENT,
+--     bookUUID VARCHAR(255) NOT NULL,
+--     tag VARCHAR(255) NOT NULL,
+--     PRIMARY KEY (id),
+--     FOREIGN KEY (bookUUID) REFERENCES books(bookUUID)
+-- );
+--
+-- DROP TABLE reviews IF EXISTS;
+--
+-- CREATE TABLE reviews (
+--     id INT NOT NULL AUTO_INCREMENT,
+--     bookUUID VARCHAR(255) NOT NULL,
+--     review VARCHAR(255) NOT NULL,
+--     rating INTEGER(5) NOT NULL,
+--     PRIMARY KEY (id),
+--     FOREIGN KEY (bookUUID) REFERENCES books(bookUUID)
+-- );
+

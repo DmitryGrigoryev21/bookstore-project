@@ -1,0 +1,174 @@
+#version: "2.0"
+
+services:
+  api-gateway:
+     build: api-gateway
+     hostname: api-gateway
+     ports:
+       - "8080:8080"
+     environment:
+       - SPRING_PROFILES_ACTIVE=docker
+       - SPRING_DATASOURCE_PASSWORD=pwd
+       - SPRING_DATASOURCE_USERNAME=user
+     depends_on:
+       - bookdetail
+       - authordetail
+       - bookreview
+       - bookrecommendation
+
+  bookdetail:
+    build: bookdetail-service
+    hostname: bookdetail-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_PASSWORD=pwd
+      - SPRING_DATASOURCE_USERNAME=user
+    depends_on:
+      mysql1:
+        condition: service_healthy
+
+  authordetail:
+    build: authordetail-service
+    hostname: authordetail-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongo
+
+  bookrecommendation:
+    build: bookrecommendation-service
+    hostname: bookrecommendation-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_PASSWORD=pwd
+      - SPRING_DATASOURCE_USERNAME=user
+    depends_on:
+      mysql3:
+        condition: service_healthy
+
+  bookreview:
+    build: bookreview-service
+    hostname: bookreview-service
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_PASSWORD=pwd
+      - SPRING_DATASOURCE_USERNAME=user
+    depends_on:
+      mysql4:
+        condition: service_healthy
+
+  mysql1:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=bookstore-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    volumes:
+      - ./data/mysql1:/var/lib/mysql
+      - ./data/init.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-uuser",
+          "-ppwd",
+          "-h",
+          "localhost",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    container_name: mongo
+    hostname: mongo
+    image: mongo
+    mem_limit: 350m
+    ports:
+      - "27017:27017"
+
+#  mysql2:
+#    image: mysql:5.7
+#    ports:
+#      - "3307:3307"
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=rootpwd
+#      - MYSQL_DATABASE=author-db
+#      - MYSQL_USER=user
+#      - MYSQL_PASSWORD=pwd
+#    volumes:
+#      - ./data/mysql2:/var/lib/mysql
+#      - ./data/init.d:/docker-entrypoint-initdb.d
+#    healthcheck:
+#      test:
+#        [
+#            "CMD",
+#            "mysqladmin",
+#            "ping",
+#            "-uuser",
+#            "-ppwd",
+#            "-h",
+#            "localhost",
+#        ]
+#      interval: 10s
+#      timeout: 5s
+#      retries: 10
+
+  mysql3:
+    image: mysql:5.7
+    ports:
+      - "3308:3308"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=bookrecommendation-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    volumes:
+      - ./data/mysql3:/var/lib/mysql
+      - ./data/init.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+            "CMD",
+            "mysqladmin",
+            "ping",
+            "-uuser",
+            "-ppwd",
+            "-h",
+            "localhost",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  mysql4:
+    image: mysql:5.7
+    ports:
+      - "3309:3309"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=bookreview-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    volumes:
+      - ./data/mysql4:/var/lib/mysql
+      - ./data/init.d:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+            "CMD",
+            "mysqladmin",
+            "ping",
+            "-uuser",
+            "-ppwd",
+            "-h",
+            "localhost",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
